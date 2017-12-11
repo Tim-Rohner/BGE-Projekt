@@ -1,0 +1,18 @@
+import requests
+from bs4 import BeautifulSoup
+
+
+base_url = 'https://www.bger.ch/ext/eurospider/live/de/php/clir/http/index.php?lang=de&type=highlight_simple_query&page=1&from_date=&to_date=&from_year=1954&to_year=2017&sort=relevance&insertion_date=&from_date_push=&top_subcollection_clir=bge&query_words=&part=all&de_fr=&de_it=&fr_de=&fr_it=&it_de=&it_fr=&orig=&translation=&rank=6&highlight_docid=atf%3A%2F%2F143-III-373%3Ade&number_of_ranks=19006&azaclir=clir'
+r = requests.get(base_url)
+soup = BeautifulSoup(r.text, "html.parser")
+ 
+p = soup.find(class_="bgeref_id")
+
+
+print(p.text.replace("\n", " ").strip())
+
+for bge in soup.find_all(class_="bgeref_id"): 
+    if bge.p: 
+        print(bge.p.text.replace("\n", " ").strip())
+    else: 
+        print(bge.contents[0].strip())
